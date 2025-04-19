@@ -1,19 +1,24 @@
-import requests
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
+import schedule
+import time
+from tools.utils import get_telegram_messages
 
 
-URL = 'https://api.telegram.org/bot{}/getUpdates'
+LAST_UPDATE_ID_RECEIVED = 0
 
-def main():
-    response = requests.get(URL.format(os.environ["TELEGRAM_BOT_API_KEY"]))
-    updates = response.json()
-    for message in updates['result']:
-        if 'message' in message:
-            mess = message['message']
-            print(mess)
+def find_me_jobs():
+    global LAST_UPDATE_ID_RECEIVED
+    messages = get_telegram_messages(LAST_UPDATE_ID_RECEIVED)
+    print(messages)
+    for message in messages:
+        message_obj = message['message']
+        LAST_UPDATE_ID_RECEIVED = message['update_id']
+        print(LAST_UPDATE_ID_RECEIVED)
+
+schedule.every(5).seconds.do(find_me_jobs)
+
 
 if __name__=="__main__":
-    main()
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+

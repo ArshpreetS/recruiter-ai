@@ -9,10 +9,35 @@ from langchain.agents import (
 )
 from langchain import hub
 from langchain_core.prompts import PromptTemplate
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 
 LAST_UPDATE_ID_RECEIVED = 0
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+
+
+def get_and_fill_form(link: str):
+    driver = webdriver.Chrome()
+    driver.get(link)
+
+    page_source = driver.page_source
+    # Pass this data to an agent which
+    # will return a json object list
+    # {
+    #   field_id: id of the input tag from form
+    #   id_type: what is the id type that will be used to locate the div
+    #   field_desc: description of the input
+    # }
+    
+
+    # For each such json object
+    # Get the content to fill from an agent
+    # fill the data received from the agent
+    # to the form using selenium
+
+    ### PROBLEMS:
+    # If the form is multi page form
 
 def is_job_application_message(message):
     llm = ChatOpenAI(
@@ -53,7 +78,8 @@ schedule.every(5).seconds.do(find_me_jobs)
 
 
 if __name__=="__main__":
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    testing_selenium()
+    #while True:
+    #    schedule.run_pending()
+    #    time.sleep(1)
 

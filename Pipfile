@@ -10,6 +10,7 @@ schedule = "*"
 langchainhub = "*"
 langchain-openai = "*"
 langchain = "*"
+selenium = "*"
 
 [dev-packages]
 
